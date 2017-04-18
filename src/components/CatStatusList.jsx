@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+// Importing action creators (and one constant) from cats -reducer
 import {
     DISABLED_HUNGRY_LEVEL,
     feedCat,
@@ -9,6 +10,7 @@ import {
     resetCats,
 } from '../reducers/cats';
 
+// Component with no internal state!
 class CatStatusList extends React.Component {
     componentDidMount() {
         // Make cats hungrier every 10 seconds.
@@ -16,6 +18,7 @@ class CatStatusList extends React.Component {
     }
 
     componentWillUnmount() {
+        // Don't make cats hungrier anymore.
         clearInterval(this._interval);
     }
 
@@ -94,6 +97,7 @@ class CatStatusList extends React.Component {
     }
 }
 
+// Map Redux store's to this particular component's props
 const mapStateToProps = (state) => {
     return {
         loading: state.cats.loading,
@@ -101,6 +105,7 @@ const mapStateToProps = (state) => {
     }
 };
 
+// Map Action dispatches to this component's props
 const mapDispatchToProps = (dispatch) => {
     return {
         makeCatsMoreHungry: () => dispatch(makeCatsMoreHungry()),
@@ -110,6 +115,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
+// Redux magic!
 export default connect(
     mapStateToProps,
     mapDispatchToProps
