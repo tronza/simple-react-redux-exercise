@@ -34,6 +34,7 @@ class CatStatusList extends React.Component {
 
     render() {
         const {
+            addCat, // It's important to use the action creator method provided by the props, notice the same function name as in import statement!
             cats,
             feedCat,
             removeCat,

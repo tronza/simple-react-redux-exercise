@@ -1,3 +1,8 @@
+// Exercise number one!
+//
+// TODO: Implement action constant, action creator, reducer and action dispatch for addCat method.
+// see: /src/components/CatStatusList.jsx
+
 // Actions
 const BASE_STRING = 'my-app/cats/';
 
@@ -113,14 +118,14 @@ function reset() {
     }
 }
 
-/**
- * TODO: implement this function by using synchronous action creator.
- * Usually this kind of things are done asynchronously as they require API calls, but for the sake of clarity lets do it the easy way.
- * (I don't want to make an API...)
- */
 export function addCat() {
-    // TODO: implement
+    /**
+     * TODO: implement this function by using this synchronous action creator.
+     * Usually this kind of things are done asynchronously as they require API calls, but for the sake of clarity lets do it the easy way.
+     * (I also don't want to make an API...)
+     */
 }
+
 
 // Asynchronous Action Creators
 export function resetCats() {
