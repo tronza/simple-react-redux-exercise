@@ -6,10 +6,12 @@ import {
     feedCat,
     makeCatsMoreHungry,
     removeCat,
+    resetCats,
 } from '../reducers/cats';
 
 class CatStatusList extends React.Component {
     componentDidMount() {
+        // Make cats hungrier every 10 seconds.
         this._interval = setInterval(() => this.props.makeCatsMoreHungry(), 10000);
     }
 
@@ -22,21 +24,30 @@ class CatStatusList extends React.Component {
             cats,
             feedCat,
             removeCat,
+            resetCats,
+            loading,
         } = this.props;
 
         return (
             <div>
                 <h1>Meow. Am I hungry?</h1>
-                <table>
-                    <thead>
+                {loading &&
+                <div>
+                    LOADING CATS!
+                </div>
+                }
+                {!loading &&
+                <div>
+                    <table>
+                        <thead>
                         <tr>
                             <th>Name</th>
                             <th>Age</th>
                             <th>Hungry?</th>
                             <th>Actions</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         {cats.map(cat => {
                             const isHungry = cat.hungerLevel >= 50;
 
@@ -64,17 +75,20 @@ class CatStatusList extends React.Component {
                                     </td>
                                     <td>
                                         {cat.hungerLevel > 0 && cat.hungerLevel < DISABLED_HUNGRY_LEVEL
-                                            ? <button onClick={(event) => feedCat(cat)}>Feed</button>
+                                            ? <button onClick={() => feedCat(cat)}>Feed</button>
                                             : ''}
                                         {cat.hungerLevel >= DISABLED_HUNGRY_LEVEL
-                                            ? <button onClick={(event) => removeCat(cat)}>Remove</button>
+                                            ? <button onClick={() => removeCat(cat)}>Remove</button>
                                             : ''}
                                     </td>
                                 </tr>
                             );
                         })}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                    <button onClick={() => resetCats()}>Reset!</button>
+                </div>
+                }
             </div>
         )
     }
@@ -82,6 +96,7 @@ class CatStatusList extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        loading: state.cats.loading,
         cats: state.cats.catList,
     }
 };
@@ -91,6 +106,7 @@ const mapDispatchToProps = (dispatch) => {
         makeCatsMoreHungry: () => dispatch(makeCatsMoreHungry()),
         feedCat: (cat) => dispatch(feedCat(cat)),
         removeCat: (cat) => dispatch(removeCat(cat)),
+        resetCats: () => dispatch(resetCats()),
     }
 };
 

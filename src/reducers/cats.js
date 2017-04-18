@@ -1,6 +1,8 @@
 // Actions
 const BASE_STRING = 'my-app/cats/';
 
+const LOAD = BASE_STRING + 'LOAD';
+const RESET = BASE_STRING + 'RESET';
 const MAKE_MORE_HUNGRY = BASE_STRING + 'MAKE_MORE_HUNGRY';
 const FEED_CAT = BASE_STRING + 'FEED_CAT';
 const REMOVE_CAT = BASE_STRING + 'REMOVE_CAT';
@@ -63,6 +65,15 @@ export default function reducer(state = initialState, action = {}) {
                 catList: state.catList.filter(cat => cat.name !== action.catName)
             };
 
+        case RESET:
+            return initialState;
+
+        case LOAD:
+            return {
+                ...state,
+                loading: action.loading,
+            };
+
         default:
             return state;
     }
@@ -86,6 +97,35 @@ export function removeCat(cat) {
     return {
         type: REMOVE_CAT,
         catName: cat.name,
+    }
+}
+
+function setLoading(loading = true) {
+    return {
+        type: LOAD,
+        loading,
+    }
+}
+
+function reset() {
+    return {
+        type: RESET,
+    }
+}
+
+// Asynchronous Action Creators
+export function resetCats() {
+    return function (dispatch) {
+        dispatch(setLoading());
+
+        return new Promise((resolve, reject) => {
+            // Simulate an API call
+            setTimeout(() => {
+                dispatch(reset());
+                dispatch(setLoading(false));
+                resolve();
+            }, 3000);
+        })
     }
 }
 
