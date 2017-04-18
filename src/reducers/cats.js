@@ -9,8 +9,8 @@ const REMOVE_CAT = BASE_STRING + 'REMOVE_CAT';
 
 const initialState = {
     catList: [
-        { name: 'Fluffy', age: 6, hungerLevel: 100 },
-        { name: 'General Meowski', age: 1, hungerLevel: 50 },
+        { name: 'Fluffy', age: 6, hungerLevel: 50 },
+        { name: 'General Meowski', age: 1, hungerLevel: 30 },
         { name: 'Charlemagne', age: 2, hungerLevel: 0 },
     ],
 };
@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action = {}) {
                         return {
                             ...cat,
                             name: cat.name + ' (PERMANENTLY ANGRY!)',
-                            hungerLevel,
+                            hungerLevel: Math.min(DISABLED_HUNGRY_LEVEL, hungerLevel),
                             inactive: true,
                         }
                     }
@@ -51,7 +51,7 @@ export default function reducer(state = initialState, action = {}) {
                     if (cat.name === action.catName) {
                         return {
                             ...cat,
-                            hungerLevel: cat.hungerLevel - 25,
+                            hungerLevel: Math.max(0, cat.hungerLevel - 25),
                         }
                     }
 
@@ -113,6 +113,15 @@ function reset() {
     }
 }
 
+/**
+ * TODO: implement this function by using synchronous action creator.
+ * Usually this kind of things are done asynchronously as they require API calls, but for the sake of clarity lets do it the easy way.
+ * (I don't want to make an API...)
+ */
+export function addCat() {
+    // TODO: implement
+}
+
 // Asynchronous Action Creators
 export function resetCats() {
     return function (dispatch) {
@@ -130,4 +139,4 @@ export function resetCats() {
 }
 
 // Constants
-export const DISABLED_HUNGRY_LEVEL = 150;
+export const DISABLED_HUNGRY_LEVEL = 100;

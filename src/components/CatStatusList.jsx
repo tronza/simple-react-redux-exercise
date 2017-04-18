@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 // Importing action creators (and one constant) from cats -reducer
 import {
+    addCat,
     DISABLED_HUNGRY_LEVEL,
     feedCat,
     makeCatsMoreHungry,
@@ -10,7 +11,7 @@ import {
     resetCats,
 } from '../reducers/cats';
 
-// Component with no internal state!
+// Look, it's a component with no internal state!
 class CatStatusList extends React.Component {
     componentDidMount() {
         // Make cats hungrier every 10 seconds.
@@ -21,6 +22,15 @@ class CatStatusList extends React.Component {
         // Don't make cats hungrier anymore.
         clearInterval(this._interval);
     }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+
+        this.props.addCat({
+            age: this.age.value,
+            name: this.name.value,
+        });
+    };
 
     render() {
         const {
@@ -51,7 +61,7 @@ class CatStatusList extends React.Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {cats.map(cat => {
+                        {cats.map((cat) => {
                             const isHungry = cat.hungerLevel >= 50;
 
                             let backgroundColor;
@@ -72,9 +82,8 @@ class CatStatusList extends React.Component {
                                     <td>
                                         {cat.age}
                                     </td>
-                                    <td style={{backgroundColor}}>
-                                        {isHungry ? 'yes' : 'no'}
-                                        {cat.hungerLevel}
+                                    <td style={{backgroundColor}} className="hungry-meter">
+                                        {cat.hungerLevel}%
                                     </td>
                                     <td>
                                         {cat.hungerLevel > 0 && cat.hungerLevel < DISABLED_HUNGRY_LEVEL
@@ -92,6 +101,20 @@ class CatStatusList extends React.Component {
                     <button onClick={() => resetCats()}>Reset!</button>
                 </div>
                 }
+                <hr/>
+                <form onSubmit={this.handleSubmit}>
+                    <h2>Add a new cat!</h2>
+
+                    <label>Name:</label>
+                    <input type="text" ref={(input) => this.name = input} />
+
+                    <label>Age:</label>
+                    <input type="number" ref={(input) => this.age = input} />
+
+                    <div>
+                        <input type="submit" value="Submit" />
+                    </div>
+                </form>
             </div>
         )
     }
@@ -112,6 +135,10 @@ const mapDispatchToProps = (dispatch) => {
         feedCat: (cat) => dispatch(feedCat(cat)),
         removeCat: (cat) => dispatch(removeCat(cat)),
         resetCats: () => dispatch(resetCats()),
+        addCat: (cat) => {
+            // TODO: implement!
+            console.log(cat);
+        }
     }
 };
 
